@@ -1,0 +1,13 @@
+cols=$(head -16 widiv_SNP/chr_1_imputed_subset_maf0.02_pruned_0.99.vcf | tail -1)
+rm id_to_rm_from_traits_file
+touch id_to_rm_from_traits_file
+rm id_to_keep_in_snps_file
+touch id_to_keep_in_snps_file
+while read -r line; do
+ a=$(echo $cols | awk -v b="$line" '{for (i=1;i<=NF;i++) { if ($i == b) { print i } }}')
+ if [[ -z $a ]]; then                # if id from traits csv isn't in snps file, rm it from traits file
+  echo $line >> id_to_rm_from_traits_file
+ else                                
+   echo $a >> id_to_keep_in_snps_file
+ fi
+done < REF_order

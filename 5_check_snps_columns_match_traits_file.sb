@@ -1,0 +1,28 @@
+cols=$(head -16 widiv_SNP/chr1_pruned.vcf | tail -1)
+echo $cols
+rm id_to_rm_from_traits_file_doublecheck
+touch id_to_rm_from_traits_file_doublecheck
+rm id_to_rm_from_snps_file_doublecheck
+touch id_to_rm_from_snps_file_doublecheck
+
+while read -r line; do
+ a=$(echo $cols | awk -v b="$line" '{for (i=1;i<=NF;i++) { if ($i == b) { print i } }}')
+ if [[ -z $a ]]; then                # if id from traits csv isn't in snps file, rm it from traits file
+  echo $line >> id_to_rm_from_traits_file_doublecheck
+ fi
+done < REF_order_final
+cols=$(cat combined_traits_tar_pruned.csv | awk '{print $2}')
+while read -r line; do
+ a=$(echo $cols | awk -v b="$line" '{for (i=1;i<=NF;i++) { if ($i == b) { print i } }}')
+ if [[ -z $a ]]; then                # if id from traits csv isn't in snps file, rm it from traits file
+  echo $line >> id_to_rm_from_snps_file_doublecheck
+ fi
+done < REF_order_final
+
+echo "cat id_to_rm_from_traits_file_doublecheck"
+cat id_to_rm_from_traits_file_doublecheck
+echo "cat id_to_rm_from_snps_file_doublecheck"
+cat id_to_rm_from_snps_file_doublecheck
+
+### manually remove anything that's not correct -- I didn't find anything
+# Note: 740 in traits file links to 740333 in snps file. Same location, no 333 id exists. I assumed..

@@ -1,0 +1,16 @@
+rm snps_info_columns
+touch snps_info_columns
+for ((i=2;i<=9;i++)); do # add first 9 columns of vcf file for info 
+ echo $i >> snps_info_columns
+done
+cat snps_info_columns > id_to_keep_in_snps_file_full
+cat id_to_keep_in_snps_file >> id_to_keep_in_snps_file_full
+
+# keep columns from individuals we have phenotype data on
+mycommand="awk '{print \$1"
+while read -r line; do
+ echo $line
+ mycommand="${mycommand},\"\\t\",\$${line}"
+done < id_to_keep_in_snps_file_full
+mycommand="${mycommand}}' widiv_SNP/chr_1_imputed_subset_maf0.02_pruned_0.99.vcf > widiv_SNP/chr1_pruned.vcf"
+echo $mycommand
