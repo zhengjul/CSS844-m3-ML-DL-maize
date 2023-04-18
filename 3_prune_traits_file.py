@@ -25,6 +25,7 @@ with open("REF_order_final", "w+") as out:
 combined_df.to_csv("combined_traits_tar_pruned.csv", sep="\t", header=True, index=False)
 
 combined_df.drop(['Accession','LineName'],axis=1,inplace = True)
-
+#combined_df.dropna(axis='columns',inplace = True)
+print(combined_df)
 combined_df.to_csv("combined_traits_tar_pruned_id.csv", sep="\t", header=True, index=False)
 
