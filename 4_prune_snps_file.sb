@@ -14,7 +14,8 @@ while read -r line; do
 done < id_to_keep_in_snps_file_full
 
 touch mycommand
-for ((i=1;i<=10;i++)); do
+for ((i=1;i<=1;i++)); do
+#for ((i=1;i<=10;i++)); do
 mycommand1="${mycommand}}' widiv_SNP/chr_${i}_imputed_subset_maf0.02_pruned_0.99.vcf > widiv_SNP/chr${i}_pruned.vcf"
 echo $mycommand1 > mycommand
 echo "chr${i}"
